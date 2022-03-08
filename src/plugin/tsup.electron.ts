@@ -17,7 +17,7 @@ export async function mainBuild() {
     format: ["cjs"],
     platform: "node",
     outDir: rootPath(`dev/electron`),
-    external: ["electron", "@nestjs"],
+    external: ["electron", "@nestjs", "electron-serve"],
     bundle: true,
     // esbuildOptions: (options: BuildOptions, context: { format: Format }) => {
     //   // console.log(options)

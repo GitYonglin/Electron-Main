@@ -3,7 +3,8 @@
 /**  */
 import { program } from 'commander';
 import inquirer from 'inquirer';
-import { devRun, mainBuild, runElectron } from '../plugin';
+import { runElectron } from '../plugin';
+import { mainBuild } from '../plugin/tsup.electron';
 
 program
   .command('dev')
@@ -17,7 +18,7 @@ program
           mainBuild();
           break;
         case "运行":
-          // runElectron(3000);
+          runElectron(3000);
           break;
         case "打包编译":
           break;
@@ -26,43 +27,6 @@ program
       }
     })
   })
-program
-  .command('build')
-  .description('编译项目')
-  .action((projectName, options) => {
-    createInquirer(options, (name) => {
-      console.log('选择了', name)
-      switch (name) {
-        case "张拉":
-          break;
-
-        default:
-          break;
-      }
-    })
-  })
-program
-  .command('run <service-port>')
-  .description('调试运行')
-  .alias('r')
-  .action(servicePort => {
-    console.log('run', servicePort)
-    const port = Number(servicePort);
-    if (port % 1 === 0) {
-      console.log(`${process.cwd()} -> 调试监听：${port}`)
-    } else {
-      console.log('请输入正确的端口号')
-    }
-    // createInquirer(options, (name) => {
-    // })
-  })
-program
-  .command('builder')
-  .description('打包')
-  .alias('b')
-  .action(() => {
-  })
-
 
 function createInquirer(options, callback) {
   const { _name, _description } = options
@@ -72,7 +36,7 @@ function createInquirer(options, callback) {
         type: 'list',
         name: _name,
         message: `请选择${_description}`,
-        choices: ['编译运行', '运行', '打包编译', '顶推', '步履']
+        choices: ['编译', '运行']
       }
     ])
     .then((answer) => {

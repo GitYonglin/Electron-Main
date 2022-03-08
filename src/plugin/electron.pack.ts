@@ -26,7 +26,7 @@ async function afterEsbuildBuild() {
 /** 复制渲染进程文件 */
 export async function copyRenderFiles() {
   if (runPath !== rootPath('')) {
-    await copy(join(runPath, 'dist'), rootPath(`dist/render`));
+    await copy(join(runPath, 'dist/output'), rootPath(`dist/render`));
     console.log(chalk.green('复制渲染进程文件完成'));
   }
 }

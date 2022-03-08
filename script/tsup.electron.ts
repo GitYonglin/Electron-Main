@@ -1,6 +1,6 @@
 import { program } from 'commander';
 import inquirer from 'inquirer';
-import { pack } from '../src/plugin';
+import { pack, runElectron } from '../src/plugin';
 import { mainBuild } from '../src/plugin/tsup.electron';
 
 
@@ -14,8 +14,8 @@ program
         case "编译":
           mainBuild();
           break;
-        case "打包":
-          pack()
+        case "运行":
+          runElectron(3000);
           break;
         default:
           break;
@@ -31,7 +31,7 @@ function createInquirer(options, callback) {
         type: 'list',
         name: _name,
         message: `请选择${_description}`,
-        choices: ['编译', '打包']
+        choices: ['编译', '运行']
       }
     ])
     .then((answer) => {
