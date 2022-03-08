@@ -40,6 +40,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@anatine/esbuild-decorators": "^0.2.18",
     "@types/node": "^17.0.21",
     "commander": "^9.0.0",
     "electron": "^17.0.0",

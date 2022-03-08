@@ -14,7 +14,7 @@ export function vitePluginElectron(config: {
   copyright: string;
   productName: string;
   buildVersion: Version;
-}): Plugin {
+},renderDir = "render"): Plugin {
   return {
     name: 'vite-plugin-electron',
     enforce: 'post',
@@ -32,7 +32,7 @@ export function vitePluginElectron(config: {
     /** 编译 */
     closeBundle: async () => {
       setChdir();
-      pack(config);
+      await pack(config, renderDir);
     }
   }
 }

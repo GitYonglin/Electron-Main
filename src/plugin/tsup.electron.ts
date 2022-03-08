@@ -1,6 +1,7 @@
 import { build } from "tsup";
 import chalk from 'chalk';
 import { copyLoginHTML, rootPath } from "./ulity";
+import { esbuildDecorators } from "@anatine/esbuild-decorators";
 
 /** 编译 */
 export async function mainBuild() {
@@ -23,6 +24,9 @@ export async function mainBuild() {
     //   // console.log(options)
     //   // console.log(context)
     // }
+    esbuildPlugins: [
+      esbuildDecorators({tsconfig: "tsconfig.json"})
+    ]
   }).then(() => {
     console.log(chalk.green('编译完成'));
   })

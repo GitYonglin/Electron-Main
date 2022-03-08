@@ -1,5 +1,5 @@
 import { compileFile } from "bytenode";
-import { copy, pathExists, writeFileSync } from "fs-extra";
+import { copy, pathExists, writeFileSync, readFile } from "fs-extra";
 import { platform } from "os"
 import { copyLoginHTML, rootPath } from "./ulity";
 import chalk from 'chalk';
@@ -37,8 +37,11 @@ export async function copyElectronFiles() {
     const runElectronPath = join(runPath, `node_modules/electron/package.json`);
     if (await pathExists(runElectronPath)) {
       if (await pathExists(rootElectronPath)) {
-        const rootVersion = (await ((await fetch(rootElectronPath))?.json()))?.version;
-        const runVersion = (await ((await fetch(runElectronPath))?.json()))?.version;
+        // const rootVersion = (await ((await fetch(rootElectronPath))?.json()))?.version;
+        // const runVersion = (await ((await fetch(runElectronPath))?.json()))?.version;
+        const rootVersion =  JSON.parse(await readFile(rootElectronPath, 'utf-8'))?.version;
+        const runVersion =  JSON.parse(await readFile(runElectronPath, 'utf-8'))?.version;
+        console.log({rootVersion, runVersion})
         if (rootVersion !== runVersion) {
           await copy(join(runPath, `node_modules/electron`), rootPath(`node_modules/electron`));
         }
@@ -57,10 +60,10 @@ export async function pack(config: { appId: string, copyright: string, productNa
   copyright: "©测试",
   productName: "测试electron程序",
   buildVersion: '0.0.0'
-}) {
+}, renderDir: string) {
   await copyElectronFiles();
   await copyLoginHTML('dist');
-  await copyRenderFiles();
+  // await copyRenderFiles();
   await afterEsbuildBuild();
   process.chdir(rootPath(''))
   console.log(chalk.yellow(`electronBuilder 开始打包${process.env.OS}...`));
@@ -124,7 +127,11 @@ export async function pack(config: { appId: string, copyright: string, productNa
       },
       files: [
         "dist/electron/**/*",
-        "dist/render/**/*",
+        {
+          "from": join(runPath, renderDir),
+          "to":"dist/render"
+        },
+        // "dist/render/**/*",
         // join(runPath, "dist/render/**/*")
       ],
       asar: false,
